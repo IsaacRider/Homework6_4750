@@ -101,8 +101,11 @@ class SudokuSolver:
         start_time = time.time()
         assignments = []  # Track the first 4 assignments for logging purposes.
         if self.backtrack(start_time, limit, assignments):
+            end_time = time.time()  # End timing
+            self.execution_time = end_time - start_time  # Store the execution time
             return self.puzzle  # Return the solved puzzle if a solution is found.
         else:
+            self.execution_time = time.time() - start_time  # Store the time even if unsolved
             return None  # Return None if no solution is found within the time limit.
     
     def backtrack(self, start_time, limit, assignments):
@@ -157,7 +160,9 @@ for i, puzzle in enumerate(puzzles, 1):
     solver = SudokuSolver(puzzle)
     solution = solver.solve(limit=10)
     if solution:
+        print(f"Puzzle {i} solved in {solver.execution_time:.2f} seconds:")
         for row in solution:
             print(row)
     else:
-        print(f"Puzzle {i} could not be solved within the time limit.")
+        print(f"Puzzle {i} could not be solved within the time limit of 10 seconds.")
+        print(f"Execution time: {solver.execution_time:.2f} seconds")
